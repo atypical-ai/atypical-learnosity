@@ -142,7 +142,9 @@ export const LearnosityInlinePrototype = () => {
             <span
               data-reference={itemReference.reference}
               className="learnosity-item flex"
-            ></span>
+            >
+              {/* Learnosity Items UI here */}
+            </span>
             <button
               type="button"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -205,15 +207,15 @@ export default function SlideOver({
   }, [status, credentials]);
 
   const [authorApp, setAuthorApp] = useState<any>(null);
-  const loadApplicationWithCredentials = (credentials) => {
-    if (typeof LearnosityAuthor != "undefined") {
-      const authorApp = LearnosityAuthor.init(
+  const loadApplicationWithCredentials = (credentials: any) => {
+    if (typeof window.LearnosityAuthor != "undefined") {
+      const authorApp = window.LearnosityAuthor.init(
         credentials,
         {
           readyListener: function () {
             console.log("Learnosity Author API is ready");
           },
-          errorListener: function (err) {
+          errorListener: function (err: any) {
             console.log("Error Loading Learnosity AuthorAPI", { err });
           },
         },
@@ -223,13 +225,6 @@ export default function SlideOver({
       setAuthorApp(authorApp);
     }
   };
-
-  // useEffect(() => {
-  //   if (status === ScriptState.READY && authorApp) {
-  //     console.log("script state READY and authorApp is set");
-  //     authorApp.editItem(itemReferences[0].reference);
-  //   }
-  // });
 
   return (
     <Transition.Root show={isEditing} as={Fragment}>
@@ -284,7 +279,9 @@ export default function SlideOver({
                         </div>
                       </div>
                     </div>
-                    <div id="learnosity-author">{/* Your content */}</div>
+                    <div id="learnosity-author">
+                      {/* Learnosity Author UI here */}
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
