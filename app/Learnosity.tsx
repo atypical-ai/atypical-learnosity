@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Script from "next/script";
 
 // slide over panel imports
@@ -177,13 +177,8 @@ export default function SlideOver({
 }) {
   const [status, setStatus] = useState<ScriptState>(ScriptState.IDLE);
 
-  // On mount, get the Learnosity credentials
-  useEffect(() => {
-    getLearnosityCredentials().catch(console.error);
-  }, []);
-
   const [credentials, setCredentials] = useState(null);
-  const getLearnosityCredentials = async () => {
+  const getLearnosityCredentials = useCallback(async () => {
     const response = await fetch("/api/learnosity", {
       method: "POST",
       body: JSON.stringify({ itemReferences }),
@@ -195,7 +190,13 @@ export default function SlideOver({
     console.log("body", { body });
     // Store the credentials for later
     setCredentials(body);
-  };
+  }, [itemReferences]);
+
+    // On mount, get the Learnosity credentials
+    useEffect(() => {
+      getLearnosityCredentials().catch(console.error);
+    }, [getLearnosityCredentials]);
+
 
   // When the script is ready and we have credentials, load the application
   useEffect(() => {
